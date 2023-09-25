@@ -60,9 +60,6 @@ Pour builder ce projet (obligatoire après un premier git clone ou une générat
 		Paramètre URL : Remplacez {id} par l'identifiant de l'utilisateur que vous souhaitez récupérer.
 		Description : Cette requête permet de récupérer les détails d'un utilisateur existant en spécifiant son identifiant dans l'URL.
 
-# Configuration sur Gitlab
-
-	Dans cette structure mise à jour, j'ai ajouté des liens vers les fichiers de services (UserService et UserServiceImpl) et j'ai inclus des URL pour les services. Assurez-vous de personnaliser les URL des services selon la structure réelle de votre projet.
 
 
 
