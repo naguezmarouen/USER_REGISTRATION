@@ -5,6 +5,7 @@ import com.sun.istack.NotNull;
 import jdk.jfr.Timestamp;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import java.time.LocalDate;
 
 @Entity
@@ -14,6 +15,7 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long userId;
     @Column(name = "NOM", nullable = false)
+    @NotBlank(message = "Nom obligatoire")
     private String userName;
     @Column(name = "DATE_NAISSANCE", nullable = false)
     @Timestamp

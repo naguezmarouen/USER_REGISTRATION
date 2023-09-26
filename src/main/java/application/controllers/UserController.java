@@ -1,6 +1,7 @@
 package application.controllers;
 
 import application.entities.User;
+import application.exceptions.NotValidDataException;
 import application.exceptions.UserNotAuthorizedException;
 import application.exceptions.UserNotFoundException;
 import org.apache.logging.log4j.LogManager;
@@ -31,11 +32,15 @@ public class UserController {
 
 
     @PostMapping("/create")
-    public User saveUser(@RequestBody User user) throws UserNotAuthorizedException {
+    public User saveUser(@RequestBody User user) throws UserNotAuthorizedException, NotValidDataException {
 
+        if (user.getCountry() == null || user.getUserName() == null || user.getBirthDateUser() == null){
+            logger.error("Veuillez remplir tous les champs obligatoires !");
+            throw new NotValidDataException("Veuillez vérifier les champs de saisi !");
+        }
         if (user.getCountry().getId() == 1 && (calculAge(user.getBirthDateUser()))>= 18){
             logger.info("Création de l'utilisateur "+user.getUserName()+" éfféctué avec succés");
-         return userService.saveUser(user);
+            return userService.saveUser(user);
         }else {
             logger.error("La création de l'utilisateur à échoué !");
             throw new UserNotAuthorizedException("Only adult French residents are allowed to create an account!");

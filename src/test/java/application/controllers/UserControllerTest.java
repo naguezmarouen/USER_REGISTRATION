@@ -2,6 +2,7 @@ package application.controllers;
 
 import application.entities.Country;
 import application.entities.User;
+import application.exceptions.NotValidDataException;
 import application.exceptions.UserNotAuthorizedException;
 import application.exceptions.UserNotFoundException;
 import application.services.UserService;
@@ -41,9 +42,10 @@ public class UserControllerTest {
     }
 
     @Test
-    void how_to_save_user_correctly() throws UserNotAuthorizedException {
+    void how_to_save_user_correctly() throws UserNotAuthorizedException, NotValidDataException {
         //GIVEN
         User newUser = new User();
+        newUser.setUserName("Marwen Naguez");
         Country country = new Country();
         country.setId(1L);
         newUser.setCountry(country);
@@ -63,6 +65,7 @@ public class UserControllerTest {
     void how_to_save_user_not_authorized_age() {
         //GIVEN
         User newUser = new User();
+        newUser.setUserName("Marwen Naguez");
         Country country = new Country();
         country.setId(1L);
         newUser.setCountry(country);
@@ -71,7 +74,7 @@ public class UserControllerTest {
         //WHEN
         try {
             userController.saveUser(newUser);
-        } catch (UserNotAuthorizedException e) {
+        } catch (UserNotAuthorizedException | NotValidDataException e) {
             //THEN
             assertEquals("Only adult French residents are allowed to create an account!", e.getMessage());
         }
@@ -81,6 +84,7 @@ public class UserControllerTest {
     void how_to_save_user_not_authorized_country() {
         //GIVEN
         User newUser = new User();
+        newUser.setUserName("Marwen Naguez");
         Country country = new Country();
         country.setId(500L);
         newUser.setCountry(country);
@@ -89,7 +93,7 @@ public class UserControllerTest {
         //WHEN
         try {
             userController.saveUser(newUser);
-        } catch (UserNotAuthorizedException e) {
+        } catch (UserNotAuthorizedException | NotValidDataException e) {
             //THEN
             assertEquals("Only adult French residents are allowed to create an account!", e.getMessage());
         }
@@ -109,4 +113,21 @@ public class UserControllerTest {
         }
     }
 
+    @Test
+    void how_to_save_user_with_empty_data() {
+        //GIVEN
+        User newUser = new User();
+        Country country = new Country();
+        country.setId(1L);
+        newUser.setCountry(country);
+        newUser.setBirthDateUser(LocalDate.of(1990, 1, 1));
+
+        //WHEN
+        try {
+            userController.saveUser(newUser);
+        } catch (UserNotAuthorizedException | NotValidDataException e) {
+            //THEN
+            assertEquals("Veuillez vérifier les champs de saisi !", e.getMessage());
+        }
+    }
 }

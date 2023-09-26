@@ -21,4 +21,11 @@ public class ExceptionHandlerController {
 
         return new ResponseEntity<>(exception.getMessage(), HttpStatus.BAD_REQUEST);
     }
+
+    @ExceptionHandler(NotValidDataException.class)
+    public ResponseEntity<String> notValidDataException(
+            NotValidDataException exception) {
+
+        return new ResponseEntity<>(exception.getMessage(), HttpStatus.BAD_REQUEST);
+    }
 }
