@@ -13,6 +13,8 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDate;
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
@@ -39,6 +41,26 @@ public class UserControllerTest {
 
         //THEN
         assertEquals(mockUser, returnedUser);
+    }
+
+    @Test
+    void how_to_get_all_user() throws UserNotFoundException {
+        //GIVEN
+        User mockUser1 = new User();
+        mockUser1.setUserId(1L);
+        mockUser1.setUserName("Marwen Naguez");
+        User mockUser2 = new User();
+        mockUser2.setUserId(1L);
+        mockUser2.setUserName("Laurent");
+        List<User> users = List.of(mockUser1,mockUser2);
+
+        when(userService.getUsers()).thenReturn(users);
+
+        //WHEN
+        List<User> returnedUsers = userController.getUsers();
+
+        //THEN
+        assertEquals(users, returnedUsers);
     }
 
     @Test
@@ -127,7 +149,7 @@ public class UserControllerTest {
             userController.saveUser(newUser);
         } catch (UserNotAuthorizedException | NotValidDataException e) {
             //THEN
-            assertEquals("Veuillez vérifier les champs de saisi !", e.getMessage());
+            assertEquals("Please check the input fields!", e.getMessage());
         }
     }
 }
