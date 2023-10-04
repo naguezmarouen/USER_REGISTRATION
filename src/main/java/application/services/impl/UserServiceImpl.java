@@ -8,23 +8,33 @@ import org.springframework.stereotype.Service;
 import application.repositories.UserRepository;
 import application.services.UserService;
 
+import java.util.List;
+
 @Service
 public class UserServiceImpl implements UserService {
 
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
+    private final CountryRepository countryRepository;
 
-    @Autowired
-    private CountryRepository countryRepository;
+
+    public UserServiceImpl(UserRepository userRepository, CountryRepository countryRepository) {
+        this.userRepository = userRepository;
+        this.countryRepository = countryRepository;
+    }
     @Override
     public User getUserByID(Long id) {
         return userRepository.findById(id).orElse(null);
     }
 
     @Override
-    public User saveUser(User user) {
+    public Long saveUser(User user) {
         Country country = countryRepository.findById(user.getCountry().getId()).orElse(null);
         user.setCountry(country);
-        return userRepository.save(user);
+        return userRepository.save(user).getUserId();
+    }
+
+    @Override
+    public List<User> getUsers() {
+        return userRepository.findAll();
     }
 }

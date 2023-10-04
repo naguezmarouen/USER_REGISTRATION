@@ -50,13 +50,13 @@ public class UserControllerTest {
         country.setId(1L);
         newUser.setCountry(country);
         newUser.setBirthDateUser(LocalDate.of(2000, 1, 1));
-        when(userService.saveUser(newUser)).thenReturn(newUser);
+        when(userService.saveUser(newUser)).thenReturn(newUser.getUserId());
 
         //WHEN
-        User returnedUser = userController.saveUser(newUser);
+        Long returnedUser = userController.saveUser(newUser);
 
         //THEN
-        assertEquals(newUser, returnedUser);
+        assertEquals(newUser.getUserId(), returnedUser);
 
         verify(userService, times(1)).saveUser(newUser);
     }

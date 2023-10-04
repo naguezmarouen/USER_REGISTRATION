@@ -59,10 +59,10 @@ public class UserServiceImplTest {
         when(userRepository.save(newUser)).thenReturn(newUser);
 
         // WHEN
-        User returnedUser = userService.saveUser(newUser);
+        Long returnedUser = userService.saveUser(newUser);
 
         // THEN
-        assertEquals(newUser, returnedUser);
+        assertEquals(newUser.getUserId(), returnedUser);
 
         verify(userRepository, times(1)).save(newUser);
     }

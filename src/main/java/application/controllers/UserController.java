@@ -12,13 +12,18 @@ import application.services.UserService;
 
 import java.time.LocalDate;
 import java.time.Period;
+import java.util.List;
 
 @RestController
 @RequestMapping("/user")
 public class UserController {
-    @Autowired
-    private UserService userService;
+
+    private final UserService userService;
     private static final Logger logger = LogManager.getLogger(UserController.class);
+
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
     @GetMapping("/{id}")
     public User getUser(@PathVariable("id") Long id) throws UserNotFoundException {
 
@@ -26,23 +31,29 @@ public class UserController {
         if (user == null){
             throw new UserNotFoundException("User not found");
         }
-        logger.info("Récupération de l'utilisateur "+user.getUserName());
+        logger.info("Retrieving the user "+user.getUserName());
         return user;
+    }
+
+    @GetMapping("/users")
+    public List<User> getUsers() {
+        logger.info("Retrieving all users ");
+        return userService.getUsers();
     }
 
 
     @PostMapping("/create")
-    public User saveUser(@RequestBody User user) throws UserNotAuthorizedException, NotValidDataException {
+    public Long saveUser(@RequestBody User user) throws UserNotAuthorizedException, NotValidDataException {
 
         if (user.getCountry() == null || user.getUserName() == null || user.getBirthDateUser() == null){
-            logger.error("Veuillez remplir tous les champs obligatoires !");
-            throw new NotValidDataException("Veuillez vérifier les champs de saisi !");
+            logger.error("Please fill in all required fields!");
+            throw new NotValidDataException("Please check the input fields!");
         }
         if (user.getCountry().getId() == 1 && (calculAge(user.getBirthDateUser()))>= 18){
-            logger.info("Création de l'utilisateur "+user.getUserName()+" éfféctué avec succés");
+            logger.info("User "+user.getUserName()+" successfully created");
             return userService.saveUser(user);
         }else {
-            logger.error("La création de l'utilisateur à échoué !");
+            logger.error("The user creation failed!");
             throw new UserNotAuthorizedException("Only adult French residents are allowed to create an account!");
         }
     }
