@@ -19,6 +19,10 @@ Cette API permet d'enregistrer et de voir les détails des utilisateurs. Le code
     - services
       - Services
       - implementation
+ - [ressources]
+   -  application.proprities
+    - data.sql
+    - log4j2.xml
  - dependencies management
    - pom.xml
 
