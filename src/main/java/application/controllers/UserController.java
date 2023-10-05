@@ -44,28 +44,7 @@ public class UserController {
 
     @PostMapping("/create")
     public Long saveUser(@RequestBody User user) throws UserNotAuthorizedException, NotValidDataException {
-
-        if (user.getCountry() == null || user.getUserName() == null || user.getBirthDateUser() == null){
-            logger.error("Please fill in all required fields!");
-            throw new NotValidDataException("Please check the input fields!");
-        }
-        if (user.getCountry().getId() == 1 && (calculAge(user.getBirthDateUser()))>= 18){
-            logger.info("User "+user.getUserName()+" successfully created");
-            return userService.saveUser(user);
-        }else {
-            logger.error("The user creation failed!");
-            throw new UserNotAuthorizedException("Only adult French residents are allowed to create an account!");
-        }
+        return userService.saveUser(user);
     }
 
-    private int calculAge(LocalDate birthDate){
-        // Date actuelle
-        LocalDate dateActuelle = LocalDate.now();
-
-        // Calcul de la période entre la date de naissance et la date actuelle
-        Period difference = Period.between(birthDate, dateActuelle);
-
-        // Récupération de l'âge
-        return difference.getYears();
-    }
 }
