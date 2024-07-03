@@ -3,3 +3,10 @@ INSERT INTO PAYS (id, PAYS) VALUES (2, 'USA');
 INSERT INTO PAYS (id, PAYS) VALUES (3, 'Brazil');
 INSERT INTO PAYS (id, PAYS) VALUES (4, 'Italy');
 INSERT INTO PAYS (id, PAYS) VALUES (5, 'Canada');
+INSERT INTO ROLES (ROLE) VALUES ('ROLE_ADMIN');
+INSERT INTO ROLES (ROLE) VALUES ('ROLE_USER');
+INSERT INTO UTILISATEUR (NOM, EMAIL, Password, DATE_NAISSANCE, TELEPHONE, SEXE, COUNTRY_ID) VALUES ('marwen', 'marwen@gmail.com', 'password',null ,null, null, 1);
+
+
+INSERT INTO users_roles (user_id, role_id) VALUES (1, 1);
+
